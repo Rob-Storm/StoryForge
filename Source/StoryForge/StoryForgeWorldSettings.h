@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/WorldSettings.h"
-#include "GameplayEnums.h"
+#include "MusicTrack.h"
 #include "LevelMusicTracks.h"
 
 #include "StoryForgeWorldSettings.generated.h"
