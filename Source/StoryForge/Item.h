@@ -2,15 +2,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interactable.h"
 #include "Item.generated.h"
 
-UCLASS()
-class STORYFORGE_API AItem : public AActor
+UCLASS(Abstract)
+class STORYFORGE_API AItem : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
 public:	
 	AItem();
+
+	void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent);
 
 public:
 
@@ -35,5 +38,7 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+	void Interact_Implementation(AActor* CallingActor) override;
 
 };

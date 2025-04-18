@@ -16,7 +16,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText SpeakerName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(MultiLine=true))
 	FText SpeechText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
