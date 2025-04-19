@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "DialogueNode.h"
+#include "DialogueEventCameraAngle.h"
+
 #include "DialogueAsset.generated.h"
 
 /**
@@ -17,6 +19,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TSoftObjectPtr<ACharacter> Target;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category = "Dialogue")
+	UDialogueEventCameraAngle* InitialCameraAngle;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category="Dialogue")
-	TArray<UDialogueNode*> DialogueNodes;	
+	TArray<UDialogueNode*> DialogueNodes;
 };

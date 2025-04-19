@@ -8,7 +8,7 @@
 /**
  * Test event class
  */
-UCLASS()
+UCLASS(Blueprintable, EditInlineNew, DefaultToInstanced)
 class STORYFORGE_API UDialogueEventClientMessage : public UDialogueNodeEvent
 {
 	GENERATED_BODY()

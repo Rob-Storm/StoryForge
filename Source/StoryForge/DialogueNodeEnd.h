@@ -14,5 +14,4 @@ UCLASS(Blueprintable, EditInlineNew, DefaultToInstanced)
 class STORYFORGE_API UDialogueNodeEnd : public UDialogueNode
 {
 	GENERATED_BODY()
-	
 };
