@@ -52,13 +52,11 @@ void AItem::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AItem::Interact_Implementation(AActor* CallingActor)
@@ -70,6 +68,7 @@ void AItem::Interact_Implementation(AActor* CallingActor)
 		if (Character->InventoryComponent->CanAddItem(this))
 		{
 			Character->InventoryComponent->AddItem(this);
+			this->SetItemEnabled(false);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Added item to inventory"));
 		}
 		else
@@ -80,5 +79,17 @@ void AItem::Interact_Implementation(AActor* CallingActor)
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Cast failed"));
+	}
+}
+
+void AItem::SetItemEnabled(bool ItemEnabled)
+{
+	this->SetActorEnableCollision(ItemEnabled);
+	this->StaticMeshComponent->SetVisibility(ItemEnabled);
+	this->StaticMeshComponent->SetSimulatePhysics(ItemEnabled);
+
+	if(!ItemEnabled)
+	{
+		this->SetActorLocation(FVector(0.f, 0.f, -2500.f));
 	}
 }

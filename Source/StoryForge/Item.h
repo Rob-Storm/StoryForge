@@ -41,4 +41,7 @@ public:
 
 	void Interact_Implementation(AActor* CallingActor) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Visibility")
+	void SetItemEnabled(bool ItemEnabled);
+
 };

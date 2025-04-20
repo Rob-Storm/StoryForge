@@ -4,9 +4,7 @@
 
 UInventoryComponent::UInventoryComponent()
 {
-
 	PrimaryComponentTick.bCanEverTick = true;
-
 }
 
 void UInventoryComponent::BeginPlay()
@@ -25,9 +23,9 @@ void UInventoryComponent::AddItem(AItem* Item)
 {
 	Items.Add(Item);
 
-	if (OnInventoryChangedDelegate.IsBound())
+	if (OnInventoryChanged.IsBound())
 	{
-		OnInventoryChangedDelegate.Broadcast();
+		OnInventoryChanged.Broadcast();
 	}
 }
 
@@ -40,9 +38,9 @@ void UInventoryComponent::RemoveItem(AItem* Item)
 		Items.RemoveAt(item);
 	}
 
-	if (OnInventoryChangedDelegate.IsBound())
+	if (OnInventoryChanged.IsBound())
 	{
-		OnInventoryChangedDelegate.Broadcast();
+		OnInventoryChanged.Broadcast();
 	}
 }
 

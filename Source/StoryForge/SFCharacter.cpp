@@ -5,7 +5,6 @@ ASFCharacter::ASFCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("InventoryComponent");
-
 }
 
 void ASFCharacter::BeginPlay()

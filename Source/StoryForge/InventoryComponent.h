@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Item.h"
+#include "Delegates/Delegate.h"
+
 #include "InventoryComponent.generated.h"
 
 /**
@@ -23,8 +25,8 @@ public:
 
 public:
 	
-	UPROPERTY(BlueprintAssignable)
-	FOnInventoryChangedSignature OnInventoryChangedDelegate;
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnInventoryChangedSignature OnInventoryChanged;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	TArray<AItem*> Items;
@@ -49,6 +51,5 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Inventory")
 	bool CanAddItem(AItem* Item);
 
-	// Delegate Function Signature
-	void OnInventoryChanged();
+	
 };

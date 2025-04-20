@@ -22,7 +22,8 @@ public:
 
 	// Components
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Component")
+	// Make sure you use VisbleAnywhere for components!!
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UInventoryComponent* InventoryComponent;
 
 protected:
