@@ -5,6 +5,8 @@
 #include "InventoryComponent.h"
 #include "SFCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDieSignature);
+
 UCLASS()
 class STORYFORGE_API ASFCharacter : public ACharacter
 {
@@ -16,8 +18,22 @@ public:
 
 public:
 
+	//Delegates
+
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FOnDieSignature OnDie;
+
+
 	// Fields
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float WalkSpeed = 300.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float RunSpeed = 500.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	UAnimationAsset* DeathAnimation;
 
 
 	// Components
@@ -35,4 +51,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Health")
+	void Die();
+
+	void Die_Implementation();
 };

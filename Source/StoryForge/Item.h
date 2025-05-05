@@ -19,14 +19,30 @@ public:
 
 	// Fields
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MetaData")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FText ItemName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MetaData")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FText ItemDescription;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Appearance")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	UStaticMesh* WorldModel;
+
+	/** Where the top-leftmost cell of the item is stored. Use -1,-1 if not in inventory */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	FVector2D InventoryLocation = FVector2D(-1,-1);
+
+	/** Size of the item in cells. USE WHOLE NUMBERS */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	FVector2D InventorySize = FVector2D(1,1);
+
+	/** Image that shows up in the inventory screen */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	UTexture2D* InventoryImage;
+
+	/** Image that shows up on the hotbar */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	UTexture2D* HotbarImage;
 
 	// Components
 
