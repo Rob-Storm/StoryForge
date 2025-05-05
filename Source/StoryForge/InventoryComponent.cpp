@@ -79,6 +79,8 @@ bool UInventoryComponent::CanItemFit(AItem* Item)
 				return false;
 		}
 	}
+	
+	return true;
 }
 
 void UInventoryComponent::SetItemLocation(AItem* Item, FVector2D Location)
