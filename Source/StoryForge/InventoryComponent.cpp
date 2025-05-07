@@ -2,19 +2,26 @@
 
 UInventoryComponent::UInventoryComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
-}
 
-void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	Grid.Empty();
+	Grid.SetNum(InventoryHeight);
 
+	for (int32 columnIndex = 0; columnIndex < InventoryHeight; columnIndex++)
+	{
+		FItemSlotColumn& Column = Grid[columnIndex];
+		Column.SlotsColumn.SetNum(InventoryWidth);
+
+		for (int32 rowIndex = 0; rowIndex < InventoryWidth; rowIndex++)
+		{
+			Column.SlotsColumn[rowIndex] = NewObject<UItemSlot>(this);
+		}
+	}
 }
 
 void UInventoryComponent::AddItem(AItem* Item)
@@ -27,26 +34,22 @@ void UInventoryComponent::AddItem(AItem* Item)
 	}
 }
 
-void UInventoryComponent::MoveItem(AItem* Item, FVector2D NewPosition)
+void UInventoryComponent::MoveItem(AItem* Item, FIntPoint NewPosition)
 {
-	for (int32 width = 0; width > Item->InventorySize.X; width++)
-	{
-		for (int32 height = 0; height > Item->InventorySize.Y; height++)
-		{
-			SetGridCellItem(nullptr, FVector2D(width, height) + Item->InventoryLocation);
-		}
-	}
-
 	SetItemLocation(Item, NewPosition);
+
+	FString DebugMessage = FString::Printf(TEXT("Item: %s new location: %d,%d"), *(Item->ItemName.ToString()), NewPosition.X, NewPosition.Y);
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, DebugMessage);
 }
 
 void UInventoryComponent::RemoveItem(AItem* Item)
 {
-	auto item = Items.Find(Item);
+	int32 itemIndex = Items.Find(Item);
 
-	if (item != -1)
+	if (itemIndex != -1)
 	{
-		Items.RemoveAt(item);
+		Items.RemoveAt(itemIndex);
 	}
 
 	if (OnInventoryChanged.IsBound())
@@ -59,39 +62,74 @@ void UInventoryComponent::DropItem(AItem* Item)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Dropped item"));
 
-	Item->InventoryLocation = FVector2D(-1, -1);
+	Item->InventoryLocation = FIntPoint(-1, -1);
 }
 
 bool UInventoryComponent::CanAddItem(AItem* Item)
 {
-	return CanItemFit(Item);
+	FIntPoint Point = FIntPoint(0, 0);
+
+	return CanItemFit(Item, Point);
 }
 
-bool UInventoryComponent::CanItemFit(AItem* Item)
+bool UInventoryComponent::CanItemFit(AItem* Item, FIntPoint& OutFoundLocation)
 {
-	for (int32 width = 0; width > Item->InventorySize.X; width++)
-	{
-		for (int32 height = 0; height > Item->InventorySize.Y; height++)
-		{
-			AItem* Item = GetItemFromGrid(FVector2D(width, height));
+	FIntPoint CheckBounds = Item->InventorySize == FIntPoint(1, 1) ? GetInventorySize() : GetInventorySize() - Item->InventorySize;
 
-			if (Item != nullptr)
-				return false;
+	return CanItemFitAtLocation(Item, CheckBounds, OutFoundLocation);
+}
+
+bool UInventoryComponent::CanItemFitAtLocation(AItem* Item, FIntPoint Location, FIntPoint& OutFoundLocation)
+{
+	FIntPoint CheckBounds;
+
+	CheckBounds = Location;
+
+	for (int32 y = 0; y <= CheckBounds.Y; y++)
+	{
+		for (int32 x = 0; x <= CheckBounds.X; x++)
+		{
+			bool canPlace = true;
+
+			for (int32 boundsY = 0; boundsY < Item->InventorySize.Y; boundsY++)
+			{
+				for (int32 boundsX = 0; boundsX < Item->InventorySize.X; boundsX++)
+				{
+					AItem* ExistingItem = GetItemFromGrid(FIntPoint(x + boundsX, y + boundsY));
+					if (ExistingItem != nullptr)
+					{
+						canPlace = false;
+
+						FString DebugMessage = FString::Printf(TEXT("%d,%d is occupied"), x + boundsX, y + boundsY);
+
+						GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Cyan, DebugMessage);
+
+						break;
+					}
+				}
+				if (!canPlace) break;
+			}
+
+			if (canPlace)
+			{
+				OutFoundLocation = FIntPoint(x, y);
+				return true;
+			}
 		}
 	}
-	
-	return true;
+
+	return false;
 }
 
-void UInventoryComponent::SetItemLocation(AItem* Item, FVector2D Location)
+void UInventoryComponent::SetItemLocation(AItem* Item, FIntPoint Location)
 {
 	Item->InventoryLocation = Location;
 
-	for (int32 width = 0; width > Item->InventorySize.X; width++)
+	for (int32 height = 0; height < Item->InventorySize.Y; height++)
 	{
-		for (int32 height = 0; height > Item->InventorySize.Y; height++)
+		for (int32 width = 0; width < Item->InventorySize.X; width++)
 		{
-			SetGridCellItem(Item, FVector2D(width, height) + Item->InventoryLocation);
+			SetGridCellItem(Item, FIntPoint(width, height) + Item->InventoryLocation);
 		}
 	}
 }

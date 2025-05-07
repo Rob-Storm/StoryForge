@@ -1,6 +1,5 @@
 #include "Item.h"
 
-
 #include "UObject/ConstructorHelpers.h"
 #include "SFCharacter.h"
 
@@ -10,6 +9,8 @@ AItem::AItem()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("WorldModel");
 	RootComponent = StaticMeshComponent;
+
+	StaticMeshComponent->SetEnableGravity(true);
 
 	ItemName = FText::FromString("Item Name");
 	ItemDescription = FText::FromString("A brief item description.");	
@@ -68,6 +69,12 @@ void AItem::Interact_Implementation(AActor* CallingActor)
 		if (Character->InventoryComponent->CanAddItem(this))
 		{
 			Character->InventoryComponent->AddItem(this);
+
+			FIntPoint ItemLocation;
+
+			Character->InventoryComponent->CanItemFit(this, ItemLocation);
+			Character->InventoryComponent->MoveItem(this, ItemLocation);
+
 			this->SetItemEnabled(false);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Added item to inventory"));
 		}
@@ -87,6 +94,7 @@ void AItem::SetItemEnabled(bool ItemEnabled)
 	this->SetActorEnableCollision(ItemEnabled);
 	this->StaticMeshComponent->SetVisibility(ItemEnabled);
 	this->StaticMeshComponent->SetSimulatePhysics(ItemEnabled);
+	this->StaticMeshComponent->SetEnableGravity(ItemEnabled);
 
 	if(!ItemEnabled)
 	{

@@ -30,11 +30,11 @@ public:
 
 	/** Where the top-leftmost cell of the item is stored. Use -1,-1 if not in inventory */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-	FVector2D InventoryLocation = FVector2D(-1,-1);
+	FIntPoint InventoryLocation = FIntPoint(-1,-1);
 
-	/** Size of the item in cells. USE WHOLE NUMBERS */
+	/** Size of the item in cells */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-	FVector2D InventorySize = FVector2D(1,1);
+	FIntPoint InventorySize = FIntPoint(1,1);
 
 	/** Image that shows up in the inventory screen */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")

@@ -14,6 +14,7 @@ struct FItemSlotColumn
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	TArray<UItemSlot*> SlotsColumn;
 };
 
@@ -34,8 +35,14 @@ public:
 
 public:
 	
-	UPROPERTY(BlueprintAssignable, Category = "Events")
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnInventoryChangedSignature OnInventoryChanged;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	int32 InventoryWidth = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	int32 InventoryHeight = 6;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	TArray<AItem*> Items;
@@ -49,13 +56,11 @@ protected:
 
 public:	
 
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void AddItem(AItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	void MoveItem(AItem* Item, FVector2D NewPosition);
+	void MoveItem(AItem* Item, FIntPoint NewPosition);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void RemoveItem(AItem* Item);
@@ -67,35 +72,51 @@ public:
 	bool CanAddItem(AItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	AItem* GetItemFromGrid(FVector2D Coordinates) const 
+	AItem* GetItemFromGrid(FIntPoint Coordinates) const
 	{
-		return Grid[Coordinates.X].SlotsColumn[Coordinates.Y]->SlotItem;
+		if (!Grid.IsValidIndex(Coordinates.Y) || !Grid.IsValidIndex(Coordinates.X))
+		{
+			return nullptr;
+		}
+		else
+		{
+			return Grid[Coordinates.Y].SlotsColumn[Coordinates.X]->SlotItem;
 
-		/* What is effectively happening here:
-		* 
-		*	const FItemSlotColumn ItemColumn = Grid[Coordinates.X];
-		*	const TArray<UItemSlot*> ItemRow = ItemColumn.SlotsColumn;
-		*	AItem* Item = ItemRow[Coordinates.Y]->SlotItem;
-		*
-		*	return Item;
-		*/
+			/*  -RCB What is effectively happening here:
+			*
+			*	const FItemSlotColumn ItemColumn = Grid[Coordinates.Y];
+			*	const TArray<UItemSlot*> ItemRow = ItemColumn.SlotsColumn;
+			*	AItem* Item = ItemRow[Coordinates.X]->SlotItem;
+			*
+			*	return Item;
+			*/
+		}
 	}
 
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	bool DoesItemExistAtLocation(FVector2D Coordinates) { if (GetItemFromGrid(Coordinates)) return true; else return false; }
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	FIntPoint GetInventorySize() const
+	{
+		return FIntPoint(Grid.Num(), Grid[0].SlotsColumn.Num());
+	}
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	bool DoesItemExistAtLocation(FIntPoint Coordinates) { if (GetItemFromGrid(Coordinates)) return true; else return false; }
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	bool CanItemFit(AItem* Item, FIntPoint& OutFoundLocation);
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	bool CanItemFitAtLocation(AItem* Item, FIntPoint Location, FIntPoint& OutFoundLocation);
 
 private:
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	bool CanItemFit(AItem* Item);
+	void SetItemLocation(AItem* Item, FIntPoint Location);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	void SetItemLocation(AItem* Item, FVector2D Location);
-
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	void SetGridCellItem(AItem* Item, FVector2D Coordinates)
+	void SetGridCellItem(AItem* Item, FIntPoint Coordinates)
 	{
-		Grid[Coordinates.X].SlotsColumn[Coordinates.Y]->SlotItem = Item;
+		Grid[Coordinates.Y].SlotsColumn[Coordinates.X]->SlotItem = Item;
 	}
 
 };

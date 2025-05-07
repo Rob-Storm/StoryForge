@@ -35,6 +35,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	UAnimationAsset* DeathAnimation;
 
+	// Barks
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Barks")
+	USoundBase* BarkPlayerInteraction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Barks")
+	USoundBase* BarkPlayerSight;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Barks")
+	USoundBase* BarkInjured;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Barks")
+	USoundBase* BarkFlee;
+
 
 	// Components
 
