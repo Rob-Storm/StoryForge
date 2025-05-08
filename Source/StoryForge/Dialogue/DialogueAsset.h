@@ -2,8 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "DialogueNode.h"
-#include "DialogueEventCameraAngle.h"
+#include "StoryForge/Dialogue/Nodes/DialogueNode.h"
+#include "StoryForge/Dialogue/Events/DialogueEventCameraAngle.h"
+#include "StoryForge/Dialogue/Events/DialogueEvent.h"
 
 #include "DialogueAsset.generated.h"
 
@@ -24,4 +25,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category="Dialogue")
 	TArray<UDialogueNode*> DialogueNodes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category = "Dialogue")
+	TArray<UDialogueEvent*> PreDialogueEvents;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category = "Dialogue")
+	TArray<UDialogueEvent*> PostDialogueEvents;
 };

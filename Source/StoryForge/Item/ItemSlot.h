@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 
-#include "Item.h"
+#include "StoryForge/Item/Item.h"
 
 #include "ItemSlot.generated.h"
 
@@ -18,7 +18,7 @@ class STORYFORGE_API UItemSlot : public UObject
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	AItem* SlotItem;
+	TObjectPtr<AItem> SlotItem;
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
 	bool IsCellEmpty() const { if (SlotItem == nullptr) return false; else return true; }

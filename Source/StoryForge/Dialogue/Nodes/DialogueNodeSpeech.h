@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DialogueNode.h"
+#include "StoryForge/Dialogue/Nodes/DialogueNode.h"
 #include "DialogueNodeSpeech.generated.h"
 
 /**

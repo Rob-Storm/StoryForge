@@ -4,8 +4,8 @@
 #include "Components/ActorComponent.h"
 #include "Delegates/Delegate.h"
 
-#include "Item.h"
-#include "ItemSlot.h"
+#include "StoryForge/Item/Item.h"
+#include "StoryForge/Item/ItemSlot.h"
 
 #include "InventoryComponent.generated.h"
 
@@ -21,7 +21,7 @@ struct FItemSlotColumn
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryChangedSignature);
 
 /**
- * Basic inventory component for storing items
+ * """""Basic""""" inventory component for storing items
  */
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STORYFORGE_API UInventoryComponent : public UActorComponent
@@ -72,41 +72,22 @@ public:
 	bool CanAddItem(AItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	AItem* GetItemFromGrid(FIntPoint Coordinates) const
-	{
-		if (!Grid.IsValidIndex(Coordinates.Y) || !Grid.IsValidIndex(Coordinates.X))
-		{
-			return nullptr;
-		}
-		else
-		{
-			return Grid[Coordinates.Y].SlotsColumn[Coordinates.X]->SlotItem;
-
-			/*  -RCB What is effectively happening here:
-			*
-			*	const FItemSlotColumn ItemColumn = Grid[Coordinates.Y];
-			*	const TArray<UItemSlot*> ItemRow = ItemColumn.SlotsColumn;
-			*	AItem* Item = ItemRow[Coordinates.X]->SlotItem;
-			*
-			*	return Item;
-			*/
-		}
-	}
+	AItem* GetItemFromGrid(FIntPoint Coordinates) const;
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
-	FIntPoint GetInventorySize() const
-	{
-		return FIntPoint(Grid.Num(), Grid[0].SlotsColumn.Num());
-	}
+	FIntPoint GetInventorySize() const;
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
-	bool DoesItemExistAtLocation(FIntPoint Coordinates) { if (GetItemFromGrid(Coordinates)) return true; else return false; }
+	bool DoesItemExistAtLocation(FIntPoint Coordinates);
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	bool IsValidSlot(FIntPoint Coordinates) const;
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
 	bool CanItemFit(AItem* Item, FIntPoint& OutFoundLocation);
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
-	bool CanItemFitAtLocation(AItem* Item, FIntPoint Location, FIntPoint& OutFoundLocation);
+	bool CanItemFitAtLocation(AItem* Item, FIntPoint Location);
 
 private:
 
@@ -114,9 +95,6 @@ private:
 	void SetItemLocation(AItem* Item, FIntPoint Location);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	void SetGridCellItem(AItem* Item, FIntPoint Coordinates)
-	{
-		Grid[Coordinates.Y].SlotsColumn[Coordinates.X]->SlotItem = Item;
-	}
+	void SetGridCellItem(AItem* Item, FIntPoint Coordinates);
 
 };

@@ -2,8 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/WorldSettings.h"
-#include "MusicTrack.h"
-#include "LevelMusicTracks.h"
+#include "StoryForge/Music/MusicTrack.h"
+#include "StoryForge/Music/LevelMusicTracks.h"
 
 #include "StoryForgeWorldSettings.generated.h"
 

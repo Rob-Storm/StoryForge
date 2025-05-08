@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "InventoryComponent.h"
+#include "StoryForge/Item/InventoryComponent.h"
 #include "SFCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDieSignature);
@@ -35,6 +35,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	UAnimationAsset* DeathAnimation;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
+	TObjectPtr<AItem> CurrentItem;
+
 	// Barks
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Barks")
@@ -55,7 +58,6 @@ public:
 	// Make sure you use VisbleAnywhere for components!!
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UInventoryComponent* InventoryComponent;
-
 protected:
 
 	virtual void BeginPlay() override;

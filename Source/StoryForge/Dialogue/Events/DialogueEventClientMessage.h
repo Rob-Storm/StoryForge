@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DialogueNodeEvent.h"
-#include "ClientMessage.h"
+#include "StoryForge/Dialogue/Events/DialogueNodeEvent.h"
+#include "StoryForge/Character/ClientMessage.h"
 #include "DialogueEventClientMessage.generated.h"
 
 /**
@@ -17,5 +17,4 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ClientMessage")
 	FClientMessage ClientMessage;
-
 };

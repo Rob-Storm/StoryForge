@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Interactable.h"
+#include "StoryForge/Interactable.h"
 #include "Item.generated.h"
 
 UCLASS(Abstract)
@@ -57,7 +57,15 @@ public:
 
 	void Interact_Implementation(AActor* CallingActor) override;
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Item")
+	void UseItem();
+
+	void UseItem_Implementation();
+
 	UFUNCTION(BlueprintCallable, Category = "Visibility")
 	void SetItemEnabled(bool ItemEnabled);
+
+	UFUNCTION(BlueprintPure, Category = "Appearance")
+	FVector2D GetImageSize() const;
 
 };

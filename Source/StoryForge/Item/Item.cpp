@@ -1,7 +1,7 @@
 #include "Item.h"
 
 #include "UObject/ConstructorHelpers.h"
-#include "SFCharacter.h"
+#include "StoryForge/Character/SFCharacter.h"
 
 AItem::AItem()
 {
@@ -89,6 +89,11 @@ void AItem::Interact_Implementation(AActor* CallingActor)
 	}
 }
 
+void AItem::UseItem_Implementation()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Use item"));
+}
+
 void AItem::SetItemEnabled(bool ItemEnabled)
 {
 	this->SetActorEnableCollision(ItemEnabled);
@@ -100,4 +105,11 @@ void AItem::SetItemEnabled(bool ItemEnabled)
 	{
 		this->SetActorLocation(FVector(0.f, 0.f, -2500.f));
 	}
+}
+
+FVector2D AItem::GetImageSize() const
+{
+	FVector2D ImageSize = InventorySize == FIntPoint(1, 1) ? FVector2D(96, 96) : FVector2D(98 * InventorySize.X, 98 * InventorySize.Y);
+
+	return ImageSize;
 }
