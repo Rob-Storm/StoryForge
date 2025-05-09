@@ -7,7 +7,7 @@
 /**
  * Trigger events before or after a conversation happens
  */
-UCLASS(Abstract)
+UCLASS(Abstract, Blueprintable, EditInlineNew, DefaultToInstanced)
 class STORYFORGE_API UDialogueEvent : public UObject
 {
 	GENERATED_BODY()

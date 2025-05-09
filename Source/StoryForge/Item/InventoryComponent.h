@@ -21,7 +21,7 @@ struct FItemSlotColumn
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryChangedSignature);
 
 /**
- * """""Basic""""" inventory component for storing items
+ * "Basic" inventory component for storing items
  */
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STORYFORGE_API UInventoryComponent : public UActorComponent
@@ -61,6 +61,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void MoveItem(AItem* Item, FIntPoint NewPosition);
+
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void RemoveItemFromGrid(AItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void RemoveItem(AItem* Item);

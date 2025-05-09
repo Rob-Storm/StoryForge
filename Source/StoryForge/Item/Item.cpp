@@ -1,7 +1,7 @@
 #include "Item.h"
 
 #include "UObject/ConstructorHelpers.h"
-#include "StoryForge/Character/SFCharacter.h"
+#include "StoryForge\Character\SFCharacter.h"
 
 AItem::AItem()
 {
@@ -9,8 +9,6 @@ AItem::AItem()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("WorldModel");
 	RootComponent = StaticMeshComponent;
-
-	StaticMeshComponent->SetEnableGravity(true);
 
 	ItemName = FText::FromString("Item Name");
 	ItemDescription = FText::FromString("A brief item description.");	
@@ -53,6 +51,8 @@ void AItem::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetItemEnabled(true);
 }
 
 void AItem::Tick(float DeltaTime)
@@ -76,6 +76,8 @@ void AItem::Interact_Implementation(AActor* CallingActor)
 			Character->InventoryComponent->MoveItem(this, ItemLocation);
 
 			this->SetItemEnabled(false);
+			this->SetActorLocation(FVector(0.f, 0.f, 2500.f));
+
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Added item to inventory"));
 		}
 		else
@@ -100,11 +102,6 @@ void AItem::SetItemEnabled(bool ItemEnabled)
 	this->StaticMeshComponent->SetVisibility(ItemEnabled);
 	this->StaticMeshComponent->SetSimulatePhysics(ItemEnabled);
 	this->StaticMeshComponent->SetEnableGravity(ItemEnabled);
-
-	if(!ItemEnabled)
-	{
-		this->SetActorLocation(FVector(0.f, 0.f, -2500.f));
-	}
 }
 
 FVector2D AItem::GetImageSize() const

@@ -36,6 +36,18 @@ void UInventoryComponent::AddItem(AItem* Item)
 
 void UInventoryComponent::MoveItem(AItem* Item, FIntPoint NewPosition)
 {
+	RemoveItemFromGrid(Item);
+
+	SetItemLocation(Item, NewPosition);
+
+	if (OnInventoryChanged.IsBound())
+	{
+		OnInventoryChanged.Broadcast();
+	}
+}
+
+void UInventoryComponent::RemoveItemFromGrid(AItem* Item)
+{
 	// -RCB 
 	// if we don't check for the {-1,-1} Item->InventoryLocation variable
 	// we will end up overwriting the inventory data at {0,0} with nullptr 
@@ -56,13 +68,6 @@ void UInventoryComponent::MoveItem(AItem* Item, FIntPoint NewPosition)
 			}
 		}
 	}
-
-	SetItemLocation(Item, NewPosition);
-
-	if (OnInventoryChanged.IsBound())
-	{
-		OnInventoryChanged.Broadcast();
-	}
 }
 
 void UInventoryComponent::RemoveItem(AItem* Item)
@@ -82,7 +87,29 @@ void UInventoryComponent::RemoveItem(AItem* Item)
 
 void UInventoryComponent::DropItem(AItem* Item)
 {
+	RemoveItem(Item);
+	RemoveItemFromGrid(Item);
+
 	Item->InventoryLocation = FIntPoint(-1, -1);
+
+	AActor* OwningActor = GetOwner();
+
+	FTransform ItemDropTransform;
+
+	ItemDropTransform.SetLocation(OwningActor->GetActorLocation() + (OwningActor->GetActorForwardVector() * 100.f));
+	ItemDropTransform.SetRotation(OwningActor->GetActorRotation().Quaternion());
+	ItemDropTransform.SetScale3D(FVector::One());
+
+	Item->SetActorTransform(ItemDropTransform);
+
+	Item->SetItemEnabled(true);
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Dropped item"));
+
+	if (OnInventoryChanged.IsBound())
+	{
+		OnInventoryChanged.Broadcast();
+	}
 }
 
 bool UInventoryComponent::CanAddItem(AItem* Item)
@@ -131,7 +158,7 @@ bool UInventoryComponent::IsValidSlot(FIntPoint Coordinates) const
 
 bool UInventoryComponent::CanItemFit(AItem* Item, FIntPoint& OutFirstValidLocation)
 {
-	FIntPoint CheckBounds = Item->InventorySize == FIntPoint(1, 1) ? GetInventorySize() : GetInventorySize() - Item->InventorySize;
+	FIntPoint CheckBounds =  GetInventorySize();
 
 	bool canItemFit = false;
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "StoryForge/Character/SFCharacter.h"
 
+#include "StoryForge/Character/SFCharacter.h"
 #include "StoryForge/Character/ClientMessage.h"
 
 #include "SFPlayer.generated.h"

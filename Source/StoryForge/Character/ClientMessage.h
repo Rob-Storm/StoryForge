@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "ClientMessage.generated.h"
 
 UENUM(BlueprintType)
@@ -12,7 +13,7 @@ enum class EClientMessageUrgency : uint8
 };
 
 /**
- * 
+ * A simple client message struct that provides text based feedback for certain actions much like System Shock, Fallout, or Deus Ex
  */
 USTRUCT(BlueprintType)
 struct FClientMessage

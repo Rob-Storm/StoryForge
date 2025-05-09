@@ -32,6 +32,12 @@ void ASFCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 }
 
+void ASFCharacter::SetCurrentItem_Implementation(AItem* Item)
+{
+	FString DebugMessage = FString::Printf(TEXT("Current Item: %s"), *(Item->ItemName.ToString()));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, DebugMessage);
+}
+
 void ASFCharacter::Die_Implementation()
 {
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationSingleNode);
