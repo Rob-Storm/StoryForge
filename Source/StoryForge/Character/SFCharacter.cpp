@@ -3,6 +3,9 @@
 #include "Components\CapsuleComponent.h"
 #include "GameFramework\CharacterMovementComponent.h"
 
+#include "StoryForge/Dialogue/Trigger/DialogueTriggerInteract.h"
+#include "StoryForge/Character/SFPlayer.h"
+
 ASFCharacter::ASFCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -30,6 +33,29 @@ void ASFCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void ASFCharacter::Interact_Implementation(AActor* CallingActor)
+{
+	if(CallingActor->IsA(ASFPlayer::StaticClass()))
+	{
+		if(CanTalk())
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Speak"));
+		}
+	}
+}
+
+bool ASFCharacter::CanTalk()
+{
+	if (Conversation == nullptr || Conversation->Trigger->GetClass() != UDialogueTriggerInteract::StaticClass())
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 void ASFCharacter::SetCurrentItem_Implementation(AItem* Item)

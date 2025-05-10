@@ -69,7 +69,7 @@ public:
 	void RemoveItem(AItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	void DropItem(AItem* Item);
+	void DropItem(AItem* Item, FTransform& OutTransform);
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
 	bool CanAddItem(AItem* Item);

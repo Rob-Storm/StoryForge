@@ -17,4 +17,5 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ClientMessage")
 	FClientMessage ClientMessage;
+
 };

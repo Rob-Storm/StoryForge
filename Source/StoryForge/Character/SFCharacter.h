@@ -2,15 +2,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "StoryForge/Item/InventoryComponent.h"
 
+#include "StoryForge/Interactable.h"
+#include "StoryForge/Item/InventoryComponent.h"
+#include "StoryForge/Dialogue/DialogueAsset.h"
 
 #include "SFCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDieSignature);
 
 UCLASS()
-class STORYFORGE_API ASFCharacter : public ACharacter
+class STORYFORGE_API ASFCharacter : public ACharacter, public IInteractable
 {
 	GENERATED_BODY()
 
@@ -35,25 +37,30 @@ public:
 	float RunSpeed = 500.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	UAnimationAsset* DeathAnimation;
+	TObjectPtr<UAnimationAsset> DeathAnimation;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
 	TObjectPtr<AItem> CurrentItem;
 
 
+	// Conversations and Dialogue
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	TObjectPtr<UDialogueAsset> Conversation;
+
 	// Barks
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Barks")
-	USoundBase* BarkPlayerInteraction;
+	TObjectPtr<USoundBase> BarkPlayerInteraction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Barks")
-	USoundBase* BarkPlayerSight;
+	TObjectPtr<USoundBase> BarkPlayerSight;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Barks")
-	USoundBase* BarkInjured;
+	TObjectPtr<USoundBase> BarkInjured;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Barks")
-	USoundBase* BarkFlee;
+	TObjectPtr<USoundBase> BarkFlee;
 
 
 	// Components
@@ -71,6 +78,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void Interact_Implementation(AActor* CallingActor) override;
+
+	UFUNCTION(BlueprintPure, Category = "Dialogue")
+	bool CanTalk();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Item")
 	void SetCurrentItem(AItem* Item);

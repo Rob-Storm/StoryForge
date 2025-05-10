@@ -3,14 +3,10 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 
-#include "DialogueEvent.generated.h"
+#include "DialogueTrigger.generated.h"
 
-/**
- * Trigger events before or after a conversation happens
- */
 UCLASS(Abstract, Blueprintable, EditInlineNew, DefaultToInstanced)
-class STORYFORGE_API UDialogueEvent : public UObject
+class STORYFORGE_API UDialogueTrigger : public UObject
 {
 	GENERATED_BODY()
-	
 };

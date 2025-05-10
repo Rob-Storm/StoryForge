@@ -76,7 +76,6 @@ void AItem::Interact_Implementation(AActor* CallingActor)
 			Character->InventoryComponent->MoveItem(this, ItemLocation);
 
 			this->SetItemEnabled(false);
-			this->SetActorLocation(FVector(0.f, 0.f, 2500.f));
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Added item to inventory"));
 		}

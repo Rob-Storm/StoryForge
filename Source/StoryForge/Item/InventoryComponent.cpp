@@ -85,12 +85,14 @@ void UInventoryComponent::RemoveItem(AItem* Item)
 	}
 }
 
-void UInventoryComponent::DropItem(AItem* Item)
+void UInventoryComponent::DropItem(AItem* Item, FTransform& OutTransform)
 {
 	RemoveItem(Item);
 	RemoveItemFromGrid(Item);
 
 	Item->InventoryLocation = FIntPoint(-1, -1);
+
+	Item->SetItemEnabled(true);
 
 	AActor* OwningActor = GetOwner();
 
@@ -101,8 +103,7 @@ void UInventoryComponent::DropItem(AItem* Item)
 	ItemDropTransform.SetScale3D(FVector::One());
 
 	Item->SetActorTransform(ItemDropTransform);
-
-	Item->SetItemEnabled(true);
+	OutTransform = ItemDropTransform;
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Dropped item"));
 
