@@ -67,7 +67,7 @@ public:
 
 	// Make sure you use VisbleAnywhere for components!!
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	UInventoryComponent* InventoryComponent;
+	TObjectPtr<UInventoryComponent> InventoryComponent;
 
 protected:
 

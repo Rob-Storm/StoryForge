@@ -10,7 +10,7 @@ ASFCharacter::ASFCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("InventoryComponent");
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("InvComp");
 
 	GetMesh()->bOwnerNoSee = true;
 

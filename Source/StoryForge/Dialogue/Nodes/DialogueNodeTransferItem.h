@@ -33,10 +33,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trade")
 	TSubclassOf<AItem> Item;
 
-	/** If the player does not have the item, jump to this node*/
+	/** If the player does have the item, jump to this node*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trade", meta = (EditCondition = "TargetFromPlayer", EditConditionHides))
 	int32 HasItemIndex;
 
+	/** If the player does NOT have the item, jump to this node*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trade", meta = (EditCondition = "TargetFromPlayer", EditConditionHides))
 	int32 NoItemIndex;
 
