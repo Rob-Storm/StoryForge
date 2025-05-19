@@ -88,6 +88,7 @@ void AItem::Interact_Implementation(AActor* CallingActor)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Cast failed"));
 	}
+
 }
 
 void AItem::UseItem_Implementation()

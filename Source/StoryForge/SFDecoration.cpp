@@ -1,6 +1,6 @@
-#include "StoryForge/Character/SFPlayer.h"
-
 #include "SFDecoration.h"
+
+#include "StoryForge/Character/SFPlayer.h"
 
 ASFDecoration::ASFDecoration()
 {
@@ -38,6 +38,14 @@ void ASFDecoration::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 		if (DecorationModel && WorldModel)
 		{
 			WorldModel->SetStaticMesh(DecorationModel);
+		}
+	}
+
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(ASFDecoration, DroppedMaterial))
+	{
+		if (DecorationModel && WorldModel)
+		{
+			WorldModel->GetStaticMesh()->SetMaterial(0, DroppedMaterial);
 		}
 	}
 }

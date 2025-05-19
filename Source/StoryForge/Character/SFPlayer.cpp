@@ -2,12 +2,16 @@
 
 ASFPlayer::ASFPlayer()
 {
+    GameCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
+
+    FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true);
+
+    GameCamera->AttachToComponent(RootComponent, AttachmentRules);
 }
 
 void ASFPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 void ASFPlayer::Tick(float DeltaTime)
@@ -33,6 +37,20 @@ bool ASFPlayer::CanPickupDecoration()
 void ASFPlayer::PickupDecoration_Implementation(ASFDecoration* DecorationActor)
 {
 
+}
+
+void ASFPlayer::DropDecoration_Implementation(bool BreakOnLanding)
+{
+}
+
+FVector ASFPlayer::GetItemDropVector(bool IsThrowing)
+{
+    float DropStrength = IsThrowing ? 500 : 300;
+    FVector DropVector;
+
+    DropVector = (this->GetActorForwardVector() + GameCamera->GetForwardVector()) * DropStrength;
+
+    return DropVector;
 }
 
 TArray<FVector> ASFPlayer::GetActorBoundingBoxCorners(const AActor* Actor, float Padding)

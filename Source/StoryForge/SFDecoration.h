@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Niagara\Classes\NiagaraSystem.h"
 
 #include "StoryForge/Interactable.h"
 
@@ -25,8 +26,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Decoration")
 	bool CanBePickedUp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Decoration")
+	bool BreakOnHit;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Decoration")
 	TObjectPtr<UStaticMesh> DecorationModel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Decoration")
+	TObjectPtr<UMaterial> DroppedMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Decoration")
+	TObjectPtr<UMaterial> PickUpMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Decoration")
+	TObjectPtr<UNiagaraSystem> DebrisEffect;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Decoration")
 	TObjectPtr<UStaticMeshComponent> WorldModel;
@@ -38,4 +51,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Interact_Implementation(AActor* CallingActor) override;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Decoration")
+	void ChangeMaterial(bool PickedUp);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Decoration")
+	void Break();
+
 };

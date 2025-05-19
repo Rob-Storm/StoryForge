@@ -4,6 +4,8 @@
 
 #include "StoryForge/Character/SFCharacter.h"
 #include "StoryForge/Character/ClientMessage.h"
+#include "Camera/CameraComponent.h"
+
 #include "StoryForge/SFDecoration.h"
 
 #include "SFPlayer.generated.h"
@@ -19,6 +21,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Decoration")
 	TObjectPtr<ASFDecoration> HeldDecoration;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UCameraComponent> GameCamera;
 	
 protected:
 
@@ -43,6 +48,14 @@ public:
 	void PickupDecoration(ASFDecoration* DecorationActor);
 
 	void PickupDecoration_Implementation(ASFDecoration* DecorationActor);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Decoration")
+	void DropDecoration(bool Throw);
+
+	void DropDecoration_Implementation(bool Throw);
+
+	UFUNCTION(BlueprintPure, Category = "Decoration")
+	FVector GetItemDropVector(bool IsThrowing);
 
 	UFUNCTION(BlueprintCallable, Category = "Decoration")
 	TArray<FVector> GetActorBoundingBoxCorners(const AActor* Actor, float Padding);
