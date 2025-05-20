@@ -29,6 +29,8 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	void Landed(const FHitResult& Hit) override;
+
 public:
 
 	virtual void Tick(float DeltaTime) override;

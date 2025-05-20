@@ -1,5 +1,7 @@
 #include "SFPlayer.h"
 
+#include "StoryForge/DamageHelper.h"
+
 ASFPlayer::ASFPlayer()
 {
     GameCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
@@ -12,6 +14,26 @@ ASFPlayer::ASFPlayer()
 void ASFPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ASFPlayer::Landed(const FHitResult& Hit)
+{
+    Super::Landed(Hit);
+
+    FVector ImpactVelocity = GetVelocity();
+
+    if (Hit.GetActor() && Hit.GetActor()->GetClass()->ImplementsInterface(UDamageable::StaticClass()))
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "Damage landed");
+
+        IDamageable::Execute_Damage(Hit.GetActor(), this, UDamageHelper::GetDamageVelocity(ImpactVelocity, 0.f, 0.2f));
+    }
+    else
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "Invalid actor hit or actor does not implement idamageable");
+    }
+
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "Landed");
 }
 
 void ASFPlayer::Tick(float DeltaTime)
@@ -45,10 +67,18 @@ void ASFPlayer::DropDecoration_Implementation(bool BreakOnLanding)
 
 FVector ASFPlayer::GetItemDropVector(bool IsThrowing)
 {
-    float DropStrength = IsThrowing ? 500 : 300;
+    float DropStrength = IsThrowing ? 1000 : 300;
     FVector DropVector;
 
-    DropVector = (this->GetActorForwardVector() + GameCamera->GetForwardVector()) * DropStrength;
+    if (IsThrowing)
+    {
+        DropVector = GameCamera->GetForwardVector() * DropStrength;
+    }
+    else
+    {
+        DropVector = (GameCamera->GetForwardVector() * DropStrength) + FVector::UpVector * DropStrength / 2;
+
+    }
 
     return DropVector;
 }

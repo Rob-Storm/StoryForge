@@ -1,5 +1,7 @@
 #include "SFDecoration.h"
 
+#include "Kismet/GameplayStatics.h"
+
 #include "StoryForge/Character/SFPlayer.h"
 
 ASFDecoration::ASFDecoration()
@@ -56,6 +58,8 @@ void ASFDecoration::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 void ASFDecoration::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CurrentHealth = DefaultHealth;
 }
 
 void ASFDecoration::Tick(float DeltaTime)
@@ -77,4 +81,28 @@ void ASFDecoration::Interact_Implementation(AActor* CallingActor)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Can NOT pick up decoration"));
 	}
+}
+
+void ASFDecoration::Damage_Implementation(AActor* CallingActor, int32 Damage)
+{
+	if (Damage > 0)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSoundEffect, GetActorLocation());
+	}
+
+	CurrentHealth -= Damage;
+
+	if(CurrentHealth <= 0)
+	{
+		CurrentHealth = 0;
+		Break();
+	}
+}
+
+float ASFDecoration::GetDamageTint()
+{
+	float FDefaultHealth = (float)DefaultHealth;
+	float FCurrentHealth = (float)CurrentHealth;
+	float alpha = 1.0f - (FCurrentHealth / FDefaultHealth);
+	return FMath::Lerp(0.f, 0.85f, alpha);
 }
