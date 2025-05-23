@@ -29,6 +29,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	UStaticMesh* WorldModel;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	UStaticMesh* ViewModel;
+
 	/** Where the top-leftmost cell of the item is stored. Use -1,-1 if not in inventory */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FIntPoint InventoryLocation = FIntPoint(-1,-1);

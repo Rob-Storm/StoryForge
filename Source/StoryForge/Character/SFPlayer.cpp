@@ -77,7 +77,6 @@ FVector ASFPlayer::GetItemDropVector(bool IsThrowing)
     else
     {
         DropVector = (GameCamera->GetForwardVector() * DropStrength) + FVector::UpVector * DropStrength / 2;
-
     }
 
     return DropVector;

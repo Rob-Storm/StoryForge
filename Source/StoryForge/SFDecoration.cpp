@@ -85,7 +85,11 @@ void ASFDecoration::Interact_Implementation(AActor* CallingActor)
 
 void ASFDecoration::Damage_Implementation(AActor* CallingActor, int32 Damage)
 {
-	if (Damage > 0)
+	if (Damage <= 0)
+	{
+		return;
+	}
+	else
 	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSoundEffect, GetActorLocation());
 	}
