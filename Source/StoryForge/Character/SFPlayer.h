@@ -49,12 +49,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Decoration")
 	void PickupDecoration(ASFDecoration* DecorationActor);
 
-	void PickupDecoration_Implementation(ASFDecoration* DecorationActor);
+	virtual void PickupDecoration_Implementation(ASFDecoration* DecorationActor);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Decoration")
 	void DropDecoration(bool Throw);
 
-	void DropDecoration_Implementation(bool Throw);
+	virtual void DropDecoration_Implementation(bool Throw);
 
 	UFUNCTION(BlueprintPure, Category = "Decoration")
 	FVector GetItemDropVector(bool IsThrowing);

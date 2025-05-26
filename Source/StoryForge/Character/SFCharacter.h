@@ -4,15 +4,17 @@
 #include "GameFramework/Character.h"
 
 #include "StoryForge/Interactable.h"
+#include "StoryForge/Damageable.h"
 #include "StoryForge/Item/InventoryComponent.h"
 #include "StoryForge/Dialogue/DialogueAsset.h"
 
 #include "SFCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDieSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCurrentItemChangedSignature);
 
 UCLASS()
-class STORYFORGE_API ASFCharacter : public ACharacter, public IInteractable
+class STORYFORGE_API ASFCharacter : public ACharacter, public IInteractable, public IDamageable
 {
 	GENERATED_BODY()
 
@@ -26,6 +28,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FOnDieSignature OnDie;
+
+	UPROPERTY(BlueprintAssignable, Category = "Item")
+	FOnCurrentItemChangedSignature OnCurrentItemChanged;
 
 
 	// Fields
@@ -87,10 +92,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Item")
 	void SetCurrentItem(AItem* Item);
 
-	void SetCurrentItem_Implementation(AItem* Item);
+	virtual void SetCurrentItem_Implementation(AItem* Item);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Health")
 	void Die();
 
-	void Die_Implementation();
+	virtual void Die_Implementation();
 };

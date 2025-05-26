@@ -63,9 +63,9 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	void Interact_Implementation(AActor* CallingActor) override;
+	virtual void Interact_Implementation(AActor* CallingActor) override;
 
-	void Damage_Implementation(AActor* CallingActor, int32 Damage) override;
+	virtual void Damage_Implementation(AActor* CallingActor, int32 Damage) override;
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Decoration")
 	void ChangeMaterial(bool PickedUp);
