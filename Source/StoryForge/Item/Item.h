@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
 #include "StoryForge/Interactable.h"
 
 #include "Item.generated.h"
@@ -57,6 +58,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Interact_Implementation(AActor* CallingActor) override;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Item")
+	void EquipItem();
+
+	virtual void EquipItem_Implementation();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Item")
 	void UseItem();

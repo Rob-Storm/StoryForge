@@ -91,6 +91,10 @@ void AItem::Interact_Implementation(AActor* CallingActor)
 
 }
 
+void AItem::EquipItem_Implementation()
+{
+}
+
 void AItem::UseItem_Implementation()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Use item"));

@@ -65,4 +65,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Decoration")
 	bool GetActorBoundsAsScreenCoords(AActor* Actor, APlayerController* PlayerController, float Padding, FVector2D& OutScreenPosition, FVector2D& OutScreenSize);
 
+	UFUNCTION(BlueprintCallable, Category = "Item")
+	void ThrowCurrentItem();
+
 };

@@ -150,3 +150,24 @@ bool ASFPlayer::GetActorBoundsAsScreenCoords(AActor* Actor, APlayerController* P
     OutScreenSize = Max - Min;
     return true;
 }
+
+void ASFPlayer::ThrowCurrentItem()
+{
+    if (HeldDecoration)
+    {
+        DropDecoration(false);
+    }
+
+    if (!CurrentItem)
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Not holding an item"));
+        return;
+    }
+
+    FTransform DroppedTransform;
+
+    InventoryComponent->DropItem(CurrentItem, DroppedTransform);
+
+    CurrentItem = nullptr;
+
+}
