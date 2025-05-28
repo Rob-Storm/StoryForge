@@ -19,6 +19,8 @@ struct FItemSlotColumn
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryChangedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemAddedSignature, AItem*, Item);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemRemovedSignature, AItem*, Item);
 
 /**
  * "Basic" inventory component for storing items
@@ -37,6 +39,12 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnInventoryChangedSignature OnInventoryChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnItemAddedSignature OnItemAdded;
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnItemRemovedSignature OnItemRemoved;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	int32 InventoryWidth = 5;

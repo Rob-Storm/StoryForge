@@ -32,6 +32,12 @@ void UInventoryComponent::AddItem(AItem* Item)
 	{
 		OnInventoryChanged.Broadcast();
 	}
+
+	if (OnItemAdded.IsBound())
+	{
+		OnItemAdded.Broadcast(Item);
+	}
+
 }
 
 void UInventoryComponent::MoveItem(AItem* Item, FIntPoint NewPosition)
@@ -82,6 +88,11 @@ void UInventoryComponent::RemoveItem(AItem* Item)
 	if (OnInventoryChanged.IsBound())
 	{
 		OnInventoryChanged.Broadcast();
+	}
+
+	if (OnItemRemoved.IsBound())
+	{
+		OnItemRemoved.Broadcast(Item);
 	}
 }
 

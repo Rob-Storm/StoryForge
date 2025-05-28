@@ -14,6 +14,8 @@ ASFPlayer::ASFPlayer()
 void ASFPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+
+    QuickSlot.SetNum(10);
 }
 
 void ASFPlayer::Landed(const FHitResult& Hit)
@@ -170,4 +172,43 @@ void ASFPlayer::ThrowCurrentItem()
 
     CurrentItem = nullptr;
 
+}
+
+TArray<AItem*> ASFPlayer::SetHotbarSlotItem_Implementation(int32 Slot, AItem* Item)
+{
+    if (!QuickSlot.IsValidIndex(Slot))
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("not valid hotbar slot"));
+        return QuickSlot;
+    }
+
+    QuickSlot[Slot] = Item;
+
+    return QuickSlot;
+}
+
+void ASFPlayer::EquipItemFromSlot(int32 Slot)
+{
+    if (!QuickSlot.IsValidIndex(Slot) || !QuickSlot[Slot])
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("not valid hotbar slot"));
+        return;
+    }
+
+    SetCurrentItem(QuickSlot[Slot]);
+
+}
+
+bool ASFPlayer::GetFirstEmptySlot(int32& Slot)
+{
+    for (int32 i = 0; i < QuickSlot.Num(); i++)
+    {
+        if (!QuickSlot[i])
+        {
+            Slot = i;
+            return true;
+        }
+    }
+
+    return false;
 }

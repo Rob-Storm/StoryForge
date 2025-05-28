@@ -24,6 +24,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> GameCamera;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	TArray<AItem*> QuickSlot;
 	
 protected:
 
@@ -67,5 +70,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Item")
 	void ThrowCurrentItem();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Item")
+	TArray<AItem*> SetHotbarSlotItem(int32 Slot, AItem* Item);
+
+	TArray<AItem*> SetHotbarSlotItem_Implementation(int32 Slot, AItem* Item);
+
+	UFUNCTION(BlueprintCallable, Category = "Item")
+	void EquipItemFromSlot(int32 Slot);
+
+	UFUNCTION(BlueprintPure, Category = "Item")
+	bool GetFirstEmptySlot(int32 &Slot);
 
 };
